@@ -62,6 +62,7 @@ endfunction
 if exists('*bufadd')
   function! s:add(name) abort
     let l:bufnr = bufadd(a:name)
+    call setbufvar(l:bufnr, '&buftype', 'nofile')
     call setbufvar(l:bufnr, '&buflisted', 1)
   endfunction
 else
@@ -78,6 +79,7 @@ if exists('*bufload')
     let l:bufnr = s:ensure(a:expr)
     if !bufloaded(l:bufnr)
       call bufload(l:bufnr)
+      call setbufvar(l:bufnr, '&readonly', 0)
     endif
     return l:bufnr
   endfunction

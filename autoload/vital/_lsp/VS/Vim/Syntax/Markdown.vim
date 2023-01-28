@@ -63,7 +63,9 @@ function! s:apply(...) abort
 
       let l:filetype_group = substitute(toupper(l:filetype), '\.', '_', 'g')
       if !has_key(b:___VS_Vim_Syntax_Markdown.filetypes, l:filetype_group)
-        call s:_execute('syntax include @%s syntax/%s.vim', l:filetype_group, l:filetype)
+        if l:filetype !=# 'text'
+          call s:_execute('syntax include @%s syntax/%s.vim', l:filetype_group, l:filetype)
+        endif
         let b:___VS_Vim_Syntax_Markdown.filetypes[l:filetype_group] = v:true
       endif
 

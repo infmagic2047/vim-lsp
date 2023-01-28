@@ -128,7 +128,7 @@ function! s:on_complete_done_after() abort
     if type(get(l:completion_item, 'textEdit', v:null)) == type({})
       let l:range = lsp#utils#text_edit#get_range(l:completion_item['textEdit'])
       let l:overflow_before = max([0, l:start_character - l:range['start']['character']])
-      let l:overflow_after = max([0, l:range['end']['character'] - l:complete_position['character']])
+      let l:overflow_after = 0
       let l:text = l:completion_item['textEdit']['newText']
     else
       let l:overflow_before = 0
@@ -192,7 +192,7 @@ function! s:is_expandable(done_line, done_position, complete_position, completio
     let l:completed_after = strcharpart(a:done_line, a:done_position['character'], strchars(a:done_line) - a:done_position['character'])
     let l:completed_line = l:completed_before . l:completed_after
     let l:text_edit_before = strcharpart(l:completed_line, 0, l:range['start']['character'])
-    let l:text_edit_after = strcharpart(l:completed_line, l:range['end']['character'], strchars(l:completed_line) - l:range['end']['character'])
+    let l:text_edit_after = strcharpart(l:completed_line, a:complete_position['character'], strchars(l:completed_line) - a:complete_position['character'])
     return a:done_line !=# l:text_edit_before . s:trim_unmeaning_tabstop(a:completion_item['textEdit']['newText']) . l:text_edit_after
   endif
   return s:get_completion_text(a:completion_item) !=# s:trim_unmeaning_tabstop(a:completed_item['word'])
